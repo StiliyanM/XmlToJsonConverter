@@ -1,7 +1,9 @@
-﻿namespace XmlToJsonConverter.Domain.Interfaces
+﻿using XmlToJsonConverter.Domain.Entities;
+
+namespace XmlToJsonConverter.Domain.Interfaces
 {
-    internal interface IFileConverter
+    public interface IFileConverter
     {
-        Task<string> ConvertXmlToJsonAsync(File xmlFile);
+        Task<string> ConvertXmlToJsonAsync(XmlFile xmlFile);
     }
 }
