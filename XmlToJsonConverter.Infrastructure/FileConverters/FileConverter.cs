@@ -1,5 +1,5 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System.Text;
 using System.Xml.Linq;
 using XmlToJsonConverter.Domain.Entities;
 using XmlToJsonConverter.Domain.Interfaces;
@@ -13,7 +13,8 @@ public class FileConverter : IFileConverter
         return await Task.Run(() =>
         {
             var xmlDocument = XDocument.Parse(Encoding.UTF8.GetString(xmlFile.Content));
-            var json = JsonSerializer.Serialize(xmlDocument);
+
+            var json = JsonConvert.SerializeXNode(xmlDocument);
             return json;
         });
     }
