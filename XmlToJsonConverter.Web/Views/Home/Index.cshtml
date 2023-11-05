@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XML to JSON Converter</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">XML to JSON Converter</h2>
+        <form id="upload-form" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="file" class="custom-file-input" id="file-input" name="file" required>
+                <label class="custom-file-label" for="file-input">Choose XML file...</label>
+            </div>
+            <button type="button" id="upload-button" class="btn btn-primary">Upload</button>
+            <button type="button" id="clear-button" class="btn btn-secondary">Clear</button>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.custom-file-input').on('change', function () {
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+            });
+
+            $('#upload-button').click(function () {
+                var formData = new FormData();
+                var fileInput = $('#file-input')[0];
+                formData.append('file', fileInput.files[0]);
+
+                $.ajax({
+                    url: '/FileUpload',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        toastr.success('File uploaded and converted successfully.');
+                    },
+                    error: function (xhr, status, error) {
+                        var response = xhr.responseJSON;
+                        if (response && response.message) {
+                            toastr.error(response.message);
+                        } else {
+                            toastr.error('An unexpected error occurred.');
+                        }
+                    }
+                });
+            });
+
+            $('#clear-button').click(function () {
+                $('#file-input').val('');
+                $('.custom-file-label').html('Choose XML file...');
+                toastr.clear();
+            });
+
+        });
+    </script>
+</body>
+</html>
