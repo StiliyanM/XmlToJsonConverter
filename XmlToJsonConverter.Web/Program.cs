@@ -7,7 +7,6 @@ using XmlToJsonConverter.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services
 .AddApplicationServices()
 .AddInfrastructureServices(builder.Configuration)
@@ -26,10 +25,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllersWithViews();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.InvalidModelStateResponseFactory = context =>
@@ -46,13 +41,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
