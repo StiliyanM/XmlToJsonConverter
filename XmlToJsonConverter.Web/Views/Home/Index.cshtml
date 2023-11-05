@@ -15,15 +15,21 @@
 <body>
 
     <div class="container mt-5">
-        <h2 class="mb-4">XML to JSON Converter</h2>
-        <form id="upload-form" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input type="file" class="custom-file-input" id="file-input" name="file" required>
-                <label class="custom-file-label" for="file-input">Choose XML file...</label>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4 text-center">XML to JSON Converter</h2>
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file-input" required>
+                        <label class="custom-file-label" for="file-input">Choose XML file...</label>
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <button type="button" id="upload-button" class="btn btn-primary mr-2">Upload</button>
+                    <button type="button" id="clear-button" class="btn btn-secondary">Clear</button>
+                </div>
             </div>
-            <button type="button" id="upload-button" class="btn btn-primary">Upload</button>
-            <button type="button" id="clear-button" class="btn btn-secondary">Clear</button>
-        </form>
+        </div>
     </div>
 
     <script>
