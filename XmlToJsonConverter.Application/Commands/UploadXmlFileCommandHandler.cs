@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using XmlToJsonConverter.Application.Helpers;
 using XmlToJsonConverter.Domain.Entities;
 using XmlToJsonConverter.Domain.Interfaces;
@@ -9,18 +10,24 @@ namespace XmlToJsonConverter.Application.Commands
     {
         private readonly IFileConverter _fileConverter;
         private readonly IFileRepository _fileRepository;
+        private readonly IValidator<UploadXmlFileCommand> _validator;
 
-        public UploadXmlFileCommandHandler(IFileConverter fileConverter, IFileRepository fileRepository)
+        public UploadXmlFileCommandHandler(
+            IFileConverter fileConverter, 
+            IFileRepository fileRepository, 
+            IValidator<UploadXmlFileCommand> validator)
         {
             _fileConverter = fileConverter;
             _fileRepository = fileRepository;
+            _validator = validator;
         }
 
         public async Task Handle(UploadXmlFileCommand command, CancellationToken cancellationToken)
         {
-            if (command == null || command.XmlFile == null || command.XmlFile.Length == 0)
+            var validationResult = await _validator.ValidateAsync(command, cancellationToken);
+            if (!validationResult.IsValid)
             {
-                throw new ArgumentException("The file is null or empty.");
+                throw new ValidationException(validationResult.Errors);
             }
 
             var xmlContent = await FileHelper.ReadFileAsync(command.XmlFile);

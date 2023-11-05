@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using FluentValidation;
+using System.Xml;
 using XmlToJsonConverter.Domain.Exceptions;
 using XmlToJsonConverter.Web.Models;
 
@@ -20,6 +21,12 @@ public class ErrorHandlingMiddleware
         try
         {
             await _next(context);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => e.ErrorMessage);
+            var errorMessage = string.Join(", ", errors);
+            await HandleExceptionAsync(context, StatusCodes.Status400BadRequest, errorMessage);
         }
         catch (XmlException ex)
         {

@@ -21,6 +21,7 @@ public class FileUploadController : ControllerBase
     {
         var applicationFile = new FormFileAdapter(file);
         var command = new UploadXmlFileCommand(applicationFile);
+
         await _mediator.Send(command);
 
         return Ok();

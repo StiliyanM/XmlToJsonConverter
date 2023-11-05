@@ -1,10 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Options;
 using System.Reflection;
-using XmlToJsonConverter.Domain.Interfaces;
-using XmlToJsonConverter.Infrastructure.FileConverters;
-using XmlToJsonConverter.Infrastructure.Repositories;
 
 namespace XmlToJsonConverter.Web.Extensions;
 
