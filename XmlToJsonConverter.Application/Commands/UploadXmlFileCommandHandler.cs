@@ -13,8 +13,8 @@ namespace XmlToJsonConverter.Application.Commands
         private readonly IValidator<UploadXmlFileCommand> _validator;
 
         public UploadXmlFileCommandHandler(
-            IFileConverter fileConverter, 
-            IFileRepository fileRepository, 
+            IFileConverter fileConverter,
+            IFileRepository fileRepository,
             IValidator<UploadXmlFileCommand> validator)
         {
             _fileConverter = fileConverter;
@@ -22,7 +22,8 @@ namespace XmlToJsonConverter.Application.Commands
             _validator = validator;
         }
 
-        public async Task Handle(UploadXmlFileCommand command, CancellationToken cancellationToken)
+        public async Task Handle(
+            UploadXmlFileCommand command, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(command, cancellationToken);
             if (!validationResult.IsValid)
@@ -35,7 +36,8 @@ namespace XmlToJsonConverter.Application.Commands
             var jsonContent = await _fileConverter.ConvertXmlToJsonAsync(xmlFile);
 
             await _fileRepository
-                .SaveFileAsync(jsonContent, Path.ChangeExtension(command.XmlFile.FileName, ".json"));
+                .SaveFileAsync(jsonContent,
+                Path.ChangeExtension(command.XmlFile.FileName, ".json"));
         }
     }
 }

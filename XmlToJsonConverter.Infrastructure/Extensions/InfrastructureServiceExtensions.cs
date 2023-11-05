@@ -18,7 +18,8 @@ public static class InfrastructureServiceExtensions
         {
             if (string.IsNullOrWhiteSpace(settings.OutputDirectory))
             {
-                throw new ArgumentException("Output directory for file storage must be set in the configuration.");
+                throw new ArgumentException(
+                    "Output directory for file storage must be set in the configuration.");
             }
         });
 

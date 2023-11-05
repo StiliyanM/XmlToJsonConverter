@@ -21,7 +21,8 @@ public class UploadXmlFileCommandHandlerTests
         var repositoryMock = CreateFileRepositoryMock();
         var validatorMock = CreateValidatorMock();
 
-        var handler = CreateHandler(converterMock.Object, repositoryMock.Object, validatorMock.Object);
+        var handler = CreateHandler(
+            converterMock.Object, repositoryMock.Object, validatorMock.Object);
         var fileAdapter = new FormFileAdapter(fileMock.Object);
         var command = new UploadXmlFileCommand(fileAdapter);
 
@@ -33,7 +34,8 @@ public class UploadXmlFileCommandHandlerTests
 
         // Assert
         converterMock.Verify(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()), Times.Once);
-        repositoryMock.Verify(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        repositoryMock.Verify(
+            x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -45,13 +47,16 @@ public class UploadXmlFileCommandHandlerTests
         var repositoryMock = CreateFileRepositoryMock();
         var validatorMock = CreateValidatorMock(isValid: false);
 
-        var handler = CreateHandler(converterMock.Object, repositoryMock.Object, validatorMock.Object);
+        var handler = CreateHandler(
+            converterMock.Object, repositoryMock.Object, validatorMock.Object);
         var fileAdapter = new FormFileAdapter(fileMock.Object);
         var command = new UploadXmlFileCommand(fileAdapter);
 
         // Act & Assert
-        await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
-        repositoryMock.Verify(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        await Assert.ThrowsAsync<ValidationException>(
+            () => handler.Handle(command, CancellationToken.None));
+        repositoryMock.Verify(
+            x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -66,13 +71,16 @@ public class UploadXmlFileCommandHandlerTests
         converterMock.Setup(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()))
             .ThrowsAsync(new Exception("Conversion failed"));
 
-        var handler = CreateHandler(converterMock.Object, repositoryMock.Object, validatorMock.Object);
+        var handler = CreateHandler(
+            converterMock.Object, repositoryMock.Object, validatorMock.Object);
         var fileAdapter = new FormFileAdapter(fileMock.Object);
         var command = new UploadXmlFileCommand(fileAdapter);
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, CancellationToken.None));
-        repositoryMock.Verify(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        await Assert.ThrowsAsync<Exception>(
+            () => handler.Handle(command, CancellationToken.None));
+        repositoryMock.Verify(
+            x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
     [Fact]
@@ -89,16 +97,19 @@ public class UploadXmlFileCommandHandlerTests
         repositoryMock.Setup(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new IOException("Unable to save file"));
 
-        var handler = CreateHandler(converterMock.Object, repositoryMock.Object, validatorMock.Object);
+        var handler = CreateHandler(
+            converterMock.Object, repositoryMock.Object, validatorMock.Object);
         var fileAdapter = new FormFileAdapter(fileMock.Object);
         var command = new UploadXmlFileCommand(fileAdapter);
 
         // Act & Assert
-        await Assert.ThrowsAsync<IOException>(() => handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<IOException>(
+            () => handler.Handle(command, CancellationToken.None));
         converterMock.Verify(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()), Times.Once);
     }
 
-    private static Mock<IFormFile> CreateFormFileMock(string content, string fileName = "test.xml")
+    private static Mock<IFormFile> CreateFormFileMock(
+        string content, string fileName = "test.xml")
     {
         var fileMock = new Mock<IFormFile>();
         var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
@@ -120,7 +131,8 @@ public class UploadXmlFileCommandHandlerTests
         return mockRepository;
     }
 
-    private static Mock<IValidator<UploadXmlFileCommand>> CreateValidatorMock(bool isValid = true)
+    private static Mock<IValidator<UploadXmlFileCommand>> CreateValidatorMock(
+        bool isValid = true)
     {
         var mockValidator = new Mock<IValidator<UploadXmlFileCommand>>();
 
@@ -131,7 +143,6 @@ public class UploadXmlFileCommandHandlerTests
                 new ValidationFailure("file", "Validation Failed")
                 });
 
-        // Ensure this line exactly matches the method called in your handler
         mockValidator.Setup(v => v.ValidateAsync(
                 It.IsAny<UploadXmlFileCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(validationResult);

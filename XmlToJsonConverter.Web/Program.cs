@@ -34,7 +34,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
             .SelectMany(x => x.Value.Errors)
             .Select(x => x.ErrorMessage).ToArray();
 
-        var errorResponse = new ErrorDetails(StatusCodes.Status400BadRequest, string.Join(", ", errors));
+        var errorResponse = new ErrorDetails(
+            StatusCodes.Status400BadRequest, string.Join(", ", errors));
 
         return new BadRequestObjectResult(errorResponse);
     };
