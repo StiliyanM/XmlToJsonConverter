@@ -18,6 +18,11 @@ namespace XmlToJsonConverter.Application.Commands
 
         public async Task Handle(UploadXmlFileCommand command, CancellationToken cancellationToken)
         {
+            if (command == null || command.XmlFile == null || command.XmlFile.Length == 0)
+            {
+                throw new ArgumentException("The file is null or empty.");
+            }
+
             var xmlContent = await FileHelper.ReadFileAsync(command.XmlFile);
             var xmlFile = XmlFile.Build(command.XmlFile.FileName, xmlContent);
             var jsonContent = await _fileConverter.ConvertXmlToJsonAsync(xmlFile);
