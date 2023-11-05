@@ -3,7 +3,6 @@ using Moq;
 using System.Text;
 using System.Xml;
 using XmlToJsonConverter.Application.Commands;
-using XmlToJsonConverter.Application.Interfaces;
 using XmlToJsonConverter.Domain.Entities;
 using XmlToJsonConverter.Domain.Interfaces;
 using XmlToJsonConverter.Web.Adapters;
@@ -40,7 +39,6 @@ public class UploadXmlFileCommandHandlerTests
         mockConverter.Verify(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()), Times.Once);
         mockRepository.Verify(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
-
 
     [Fact]
     public async Task GivenInvalidXml_WhenUploadCommandIsHandled_ErrorIsThrown()
