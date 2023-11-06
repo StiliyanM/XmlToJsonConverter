@@ -26,14 +26,16 @@ public class UploadXmlFileCommandHandlerTests
         var fileAdapter = new FormFileAdapter(fileMock.Object);
         var command = new UploadXmlFileCommand(fileAdapter);
 
-        converterMock.Setup(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()))
+        converterMock.Setup(x => x.ConvertXmlToJsonAsync(
+            It.IsAny<XmlFile>(), CancellationToken.None))
             .ReturnsAsync("valid JSON content");
 
         // Act
         await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        converterMock.Verify(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()), Times.Once);
+        converterMock.Verify(x => x.ConvertXmlToJsonAsync(
+            It.IsAny<XmlFile>(), CancellationToken.None), Times.Once);
         repositoryMock.Verify(
             x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
@@ -68,7 +70,8 @@ public class UploadXmlFileCommandHandlerTests
         var repositoryMock = CreateFileRepositoryMock();
         var validatorMock = CreateValidatorMock();
 
-        converterMock.Setup(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()))
+        converterMock.Setup(x => x.ConvertXmlToJsonAsync(
+                It.IsAny<XmlFile>(), CancellationToken.None))
             .ThrowsAsync(new Exception("Conversion failed"));
 
         var handler = CreateHandler(
@@ -92,7 +95,8 @@ public class UploadXmlFileCommandHandlerTests
         var repositoryMock = CreateFileRepositoryMock();
         var validatorMock = CreateValidatorMock();
 
-        converterMock.Setup(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()))
+        converterMock.Setup(x => x.ConvertXmlToJsonAsync(
+            It.IsAny<XmlFile>(), CancellationToken.None))
             .ReturnsAsync("valid JSON content");
         repositoryMock.Setup(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new IOException("Unable to save file"));
@@ -105,7 +109,9 @@ public class UploadXmlFileCommandHandlerTests
         // Act & Assert
         await Assert.ThrowsAsync<IOException>(
             () => handler.Handle(command, CancellationToken.None));
-        converterMock.Verify(x => x.ConvertXmlToJsonAsync(It.IsAny<XmlFile>()), Times.Once);
+
+        converterMock.Verify(x => x.ConvertXmlToJsonAsync(
+            It.IsAny<XmlFile>(), CancellationToken.None), Times.Once);
     }
 
     private static Mock<IFormFile> CreateFormFileMock(

@@ -33,7 +33,7 @@ namespace XmlToJsonConverter.Application.Commands
 
             var xmlContent = await FileHelper.ReadFileAsync(command.XmlFile);
             var xmlFile = XmlFile.Build(command.XmlFile.FileName, xmlContent);
-            var jsonContent = await _fileConverter.ConvertXmlToJsonAsync(xmlFile);
+            var jsonContent = await _fileConverter.ConvertXmlToJsonAsync(xmlFile, cancellationToken);
 
             await _fileRepository
                 .SaveFileAsync(jsonContent,
