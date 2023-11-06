@@ -24,3 +24,13 @@ The converter offers a user-friendly web interface:
 
 The web interface is designed for ease of use and requires no special tools or knowledge of API endpoints.
 
+## Configuration
+
+Below is a snippet of the application's configuration file (appsettings.json) that specifies the output directory for the converted JSON files:
+
+`"FileSettings": {
+    "OutputDirectory": "D:\\OutputFiles" // Converted JSON files will be saved in this directory.
+  }`
+
+Please ensure that the OutputDirectory path exists on your system and your user account has write permissions for this directory. If the path does not exist or permissions are inadequate, the application may not function as expected.
+With this additional information, users should be fully aware of where the converted files will be located after using your XML to JSON Converter service.
