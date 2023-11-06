@@ -1,18 +1,17 @@
 ﻿using Newtonsoft.Json;
 using System.Xml;
 using System.Xml.Linq;
-using XmlToJsonConverter.Domain.Entities;
-using XmlToJsonConverter.Domain.Interfaces;
+using XmlToJsonConverter.Domain.Interfaces.Converters;
 
-namespace XmlToJsonConverter.Infrastructure.FileConverters;
+namespace XmlToJsonConverter.Infrastructure.Converters;
 
-public class FileConverter : IFileConverter
+public class XmlToJsonConverterService : IXmlToJsonConverter
 {
-    public async Task<string> ConvertXmlToJsonAsync(XmlFile xmlFile,
+    public async Task<string> ConvertAsync(Stream xmlStream,
         CancellationToken cancellationToken)
     {
         using var reader = XmlReader.Create(
-            new MemoryStream(xmlFile.Content), new XmlReaderSettings { Async = true });
+            xmlStream, new XmlReaderSettings { Async = true });
         var xmlDocument = await XDocument.LoadAsync(
             reader, LoadOptions.None, cancellationToken);
         var json = JsonConvert.SerializeXNode(xmlDocument);

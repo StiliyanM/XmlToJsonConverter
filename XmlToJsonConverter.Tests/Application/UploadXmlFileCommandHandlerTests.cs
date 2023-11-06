@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using System.Text;
 using XmlToJsonConverter.Application.Commands;
-using XmlToJsonConverter.Domain.Entities;
 using XmlToJsonConverter.Domain.Interfaces;
+using XmlToJsonConverter.Domain.Interfaces.Converters;
 using XmlToJsonConverter.Web.Adapters;
 
 namespace XmlToJsonConverter.Tests.Application;
@@ -26,16 +26,16 @@ public class UploadXmlFileCommandHandlerTests
         var fileAdapter = new FormFileAdapter(fileMock.Object);
         var command = new UploadXmlFileCommand(fileAdapter);
 
-        converterMock.Setup(x => x.ConvertXmlToJsonAsync(
-            It.IsAny<XmlFile>(), CancellationToken.None))
+        converterMock.Setup(x => x.ConvertAsync(
+            It.IsAny<Stream>(), CancellationToken.None))
             .ReturnsAsync("valid JSON content");
 
         // Act
         await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        converterMock.Verify(x => x.ConvertXmlToJsonAsync(
-            It.IsAny<XmlFile>(), CancellationToken.None), Times.Once);
+        converterMock.Verify(x => x.ConvertAsync(
+            It.IsAny<Stream>(), CancellationToken.None), Times.Once);
         repositoryMock.Verify(
             x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
@@ -70,8 +70,8 @@ public class UploadXmlFileCommandHandlerTests
         var repositoryMock = CreateFileRepositoryMock();
         var validatorMock = CreateValidatorMock();
 
-        converterMock.Setup(x => x.ConvertXmlToJsonAsync(
-                It.IsAny<XmlFile>(), CancellationToken.None))
+        converterMock.Setup(x => x.ConvertAsync(
+                It.IsAny<Stream>(), CancellationToken.None))
             .ThrowsAsync(new Exception("Conversion failed"));
 
         var handler = CreateHandler(
@@ -95,8 +95,8 @@ public class UploadXmlFileCommandHandlerTests
         var repositoryMock = CreateFileRepositoryMock();
         var validatorMock = CreateValidatorMock();
 
-        converterMock.Setup(x => x.ConvertXmlToJsonAsync(
-            It.IsAny<XmlFile>(), CancellationToken.None))
+        converterMock.Setup(x => x.ConvertAsync(
+            It.IsAny<Stream>(), CancellationToken.None))
             .ReturnsAsync("valid JSON content");
         repositoryMock.Setup(x => x.SaveFileAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new IOException("Unable to save file"));
@@ -110,8 +110,8 @@ public class UploadXmlFileCommandHandlerTests
         await Assert.ThrowsAsync<IOException>(
             () => handler.Handle(command, CancellationToken.None));
 
-        converterMock.Verify(x => x.ConvertXmlToJsonAsync(
-            It.IsAny<XmlFile>(), CancellationToken.None), Times.Once);
+        converterMock.Verify(x => x.ConvertAsync(
+            It.IsAny<Stream>(), CancellationToken.None), Times.Once);
     }
 
     private static Mock<IFormFile> CreateFormFileMock(
@@ -125,9 +125,9 @@ public class UploadXmlFileCommandHandlerTests
         return fileMock;
     }
 
-    private static Mock<IFileConverter> CreateFileConverterMock()
+    private static Mock<IXmlToJsonConverter> CreateFileConverterMock()
     {
-        var mockConverter = new Mock<IFileConverter>();
+        var mockConverter = new Mock<IXmlToJsonConverter>();
         return mockConverter;
     }
 
@@ -157,7 +157,7 @@ public class UploadXmlFileCommandHandlerTests
     }
 
     private static UploadXmlFileCommandHandler CreateHandler(
-        IFileConverter converter,
+        IXmlToJsonConverter converter,
         IFileRepository repository,
         IValidator<UploadXmlFileCommand> validator)
     {

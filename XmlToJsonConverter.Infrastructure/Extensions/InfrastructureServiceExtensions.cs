@@ -2,7 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.IO.Abstractions;
 using XmlToJsonConverter.Domain.Interfaces;
-using XmlToJsonConverter.Infrastructure.FileConverters;
+using XmlToJsonConverter.Domain.Interfaces.Converters;
+using XmlToJsonConverter.Infrastructure.Converters;
 using XmlToJsonConverter.Infrastructure.Repositories;
 
 namespace XmlToJsonConverter.Infrastructure.Extensions;
@@ -23,7 +24,7 @@ public static class InfrastructureServiceExtensions
     }
 
     public static IServiceCollection AddFileConverter(this IServiceCollection services)
-        => services.AddTransient<IFileConverter, FileConverter>();
+        => services.AddTransient<IXmlToJsonConverter, XmlToJsonConverterService>();
 
     public static IServiceCollection AddFileRepository(
         this IServiceCollection services)

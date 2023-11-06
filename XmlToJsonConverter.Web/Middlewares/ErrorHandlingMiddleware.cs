@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using System.Xml;
-using XmlToJsonConverter.Domain.Exceptions;
 using XmlToJsonConverter.Web.Models;
 
 namespace XmlToJsonConverter.Web.Middlewares;
@@ -39,13 +38,6 @@ public class ErrorHandlingMiddleware
             _logger.LogError(ex, "File system error.");
             await HandleExceptionAsync(context, StatusCodes.Status500InternalServerError, 
                 "Error processing file.");
-        }
-        catch (FileException ex)
-        {
-            _logger.LogError(ex, "File error.");
-            await HandleExceptionAsync(context, StatusCodes.Status500InternalServerError,
-                "Error processing file.");
-
         }
         catch (Exception ex)
         {
