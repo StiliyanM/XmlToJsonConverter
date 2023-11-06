@@ -2,5 +2,5 @@
 
 public interface IXmlToJsonConverter
 {
-    Task<string> ConvertAsync(Stream xmlFile, CancellationToken cancellationToken);
+    Task<string> ConvertAsync(Stream xmlStream, CancellationToken cancellationToken);
 }
