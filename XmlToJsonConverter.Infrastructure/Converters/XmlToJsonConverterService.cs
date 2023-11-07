@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Xml;
 using System.Xml.Linq;
-using XmlToJsonConverter.Domain.Interfaces.Converters;
+using XmlToJsonConverter.Domain.Interfaces;
 
 namespace XmlToJsonConverter.Infrastructure.Converters;
 

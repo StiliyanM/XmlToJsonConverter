@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.IO.Abstractions;
 using XmlToJsonConverter.Domain.Interfaces;
-using XmlToJsonConverter.Domain.Interfaces.Converters;
 using XmlToJsonConverter.Infrastructure.Converters;
 using XmlToJsonConverter.Infrastructure.Repositories;
 

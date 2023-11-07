@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
 using XmlToJsonConverter.Domain.Interfaces;
-using XmlToJsonConverter.Domain.Interfaces.Converters;
 
 namespace XmlToJsonConverter.Application.Commands
 {

@@ -1,4 +1,4 @@
-﻿namespace XmlToJsonConverter.Domain.Interfaces.Converters;
+﻿namespace XmlToJsonConverter.Domain.Interfaces;
 
 public interface IXmlToJsonConverter
 {

@@ -5,7 +5,6 @@ using Moq;
 using System.Text;
 using XmlToJsonConverter.Application.Commands;
 using XmlToJsonConverter.Domain.Interfaces;
-using XmlToJsonConverter.Domain.Interfaces.Converters;
 using XmlToJsonConverter.Web.Adapters;
 
 namespace XmlToJsonConverter.Tests.Application;
